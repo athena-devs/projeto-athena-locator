@@ -1,0 +1,39 @@
+@port = 3000
+
+# @name createUser
+POST http://localhost:{{port}}/users
+content-type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john@inter.net",
+  "password": "teste123"
+}
+
+###
+
+
+@userId = {{createUser.response.body.id}}
+
+
+
+### USERS
+
+GET http://localhost:{{port}}/users/{{userId}}
+
+###
+
+PATCH http://localhost:{{port}}/users/{{userId}}
+content-type: application/json
+
+{
+  "name": "João Zé",
+  "email": "john@inter.net",
+  "password": "teste123"
+}
+
+###
+
+DELETE http://localhost:{{port}}/users/{{userId}}
+
+###
