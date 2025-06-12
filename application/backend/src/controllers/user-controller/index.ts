@@ -26,9 +26,9 @@ export async function updateUser(request: Request, response: Response) {
     const updateUser = makeUsersUpdateUseCase()
     const parsedUser = data.verify_user(request.body)
     const { id } = data.verify_id(request.params.id)
-
-    await updateUser.execute(id, parsedUser)
-    return response.status(204)
+    const user = await updateUser.execute(id, parsedUser)
+    
+    return response.status(204).send(user)
 }
 
 

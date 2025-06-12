@@ -12,5 +12,5 @@ model User {
   name     String
   email    String @unique
   password String
-  isAdmin  Int    @default(0)
+  isLandLord  Int    @default(0)
 }

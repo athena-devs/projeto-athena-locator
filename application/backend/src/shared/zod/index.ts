@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { IUser } from "@models/user"
+import { ILandLord } from "@models/landlord";
 
 export class VerifyData {
    
@@ -11,6 +12,16 @@ export class VerifyData {
         })
 
         return schema.parse(user)
+    }
+     verify_landLord(landLord: ILandLord){
+        const schema = z.object({
+            name: z.string().max(50),
+            email: z.string().email().max(25),
+            password: z.string().min(6),
+            isLandLord: z.number().default(1)
+        })
+
+        return schema.parse(landLord)
     }
 
    verify_id(id: string) {
