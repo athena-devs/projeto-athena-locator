@@ -3,41 +3,77 @@ import { LandLordsRepository } from "@services/landlord-services/repositories";
 import { ILandLord } from "@models/landlord";
 
 export class PrismaLandLordsRepository implements LandLordsRepository {
-    async createLandLord(data: ILandLord): Promise<ILandLord> {
-        const landLord = await prisma.user.create({
+    async createLandLord(id: string, data: ILandLord): Promise<ILandLord> {
+        const landLord = await prisma.landLord.create({
             data: {
-                name: data.name,
-                email: data.email,
-                password: data.password,
-                isLandLord: 1
+                userId: id,
+                companyName: data.companyName,
+                companyDesc: data.companyDesc,
+                companyEmail: data.email,
+                companyPassword: data.companyPassword,
+                properties: {
+                    create: data.properties
+                }
+            },
+            include: {
+                properties: true
             }
         })
-        return landLord
+
+        return {
+            ...data,
+            properties: landLord.properties
+        }
     }
-    
-    async getLandLord(id: string): Promise<ILandLord | null> {
-        const landLord = await prisma.user.findUnique({
-            where: {id}
-        }) 
-        return landLord
+
+    async getLandLord(userId: string): Promise<ILandLord | null> {
+        const landLord = await prisma.landLord.findUnique({
+            where: { userId },
+            include: { properties: true }
+        })
+        
+        const user = await prisma.user.findUnique({
+            where: { id: userId  },
+        })
+
+        if (!landLord) return null
+
+        if (!user) return null
+
+        return {
+            name: user.name,
+            email: landLord.companyEmail,
+            password: landLord.companyPassword,
+            companyName: landLord.companyName,
+            companyDesc: landLord.companyDesc,
+            companyPassword: landLord.companyPassword,
+            properties: landLord.properties
+        }
     }
-    
-    async updateLandLord(id: string, data: ILandLord): Promise<ILandLord |  null> {
-        const landLord = await prisma.user.update({
-            where: {id},
+
+    async updateLandLord(userId: string, data: ILandLord): Promise<ILandLord | null> {
+        const landLord = await prisma.landLord.update({
+            where: { userId },
             data: {
-                name: data.name,
-                email: data.email,
-                password: data.password
+                companyName: data.companyName,
+                companyDesc: data.companyDesc,
+                companyEmail: data.email,
+                companyPassword: data.companyPassword
+            },
+            include: {
+                properties: true
             }
         })
-        return landLord
+
+        return {
+            ...data,
+            properties: landLord.properties
+        }
     }
 
-    async deleteLandLord(id: string): Promise<void> {
-        await prisma.user.delete({
-            where: {id}
-        }) 
+    async deleteLandLord(userId: string): Promise<void> {
+        await prisma.landLord.delete({
+            where: { userId }
+        })
     }
-
 }

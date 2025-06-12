@@ -8,9 +8,33 @@ datasource database {
 }
 
 model User {
-  id       String @id @default(uuid())
-  name     String
-  email    String @unique
-  password String
-  isLandLord  Int    @default(0)
+  id         String     @id @default(uuid())
+  name       String
+  email      String     @unique
+  password   String
+  landLord   LandLord?  @relation("UserLandLord")
 }
+
+model LandLord {
+  userId           String     @id
+  user             User       @relation("UserLandLord", fields: [userId], references: [id])
+  companyName      String
+  companyEmail     String
+  companyPassword  String
+  companyDesc      String
+  properties       RentalPlace[]
+}
+
+model RentalPlace {
+  id          String    @id @default(uuid())
+  title       String
+  description String
+  address     String
+  price       Float
+  available   Boolean   @default(true)
+
+  landLordId  String
+  landLord    LandLord  @relation(fields: [landLordId], references: [userId])
+}
+
+

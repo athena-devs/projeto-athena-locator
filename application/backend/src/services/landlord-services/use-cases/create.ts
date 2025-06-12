@@ -6,8 +6,8 @@ export class LandLordsCreateUseCase {
         this.landLordsRepository = landLordsRepository
     }
   
-    async execute(data: ILandLord): Promise<ILandLord> {
-        const user = await this.landLordsRepository.createLandLord(data)
+    async execute(id: string, data: ILandLord): Promise<ILandLord> {
+        const user = await this.landLordsRepository.createLandLord(id, data)
         return user
     }
 }

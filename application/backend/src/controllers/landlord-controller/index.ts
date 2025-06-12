@@ -6,7 +6,8 @@ export async function createLandLord(request: Request, response: Response) {
     const data =  new VerifyData()
     const createLandLord = makeLandLordsCreateUseCase()
     const parsedLandLord = data.verify_landLord(request.body)
-    const landLord = await createLandLord.execute(parsedLandLord)
+    const { id } = data.verify_id(request.params.id)
+    const landLord = await createLandLord.execute(id, parsedLandLord)
     
     return response.status(201).send(landLord)
 }
@@ -29,7 +30,7 @@ export async function updateLandLord(request: Request, response: Response) {
     const { id } = data.verify_id(request.params.id)
     const landLord = await updateLandLord.execute(id, parsedLandLord)
     
-    return response.status(204).send(landLord)
+    return response.status(200).send(landLord)
 }
 
 

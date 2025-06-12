@@ -37,3 +37,49 @@ content-type: application/json
 DELETE http://localhost:{{port}}/users/{{userId}}
 
 ###
+### @name createLandLord
+POST http://localhost:{{port}}/landlords/{{userId}}
+content-type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john@inter.net",
+  "password": "teste123",
+  "isLandLord": 1,
+  "companyName": "Doe Rentals",
+  "companyDesc": "Empresa especializada em aluguel de imóveis residenciais.",
+  "companyPassword": "empresa123"
+}
+
+
+### @name getLandLord
+GET http://localhost:{{port}}/landlords/{{userId}}
+
+
+### @name updateLandLord
+PATCH http://localhost:{{port}}/landlords/{{userId}}
+content-type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john@inter.net",
+  "password": "teste123",
+  "isLandLord": 1,
+  "companyName": "Doe Group",
+  "companyDesc": "Atualização da descrição da empresa.",
+  "companyPassword": "novaSenha456",
+  "properties": [
+    {
+      "title": "Casa na praia",
+      "description": "Vista para o mar, 3 quartos.",
+      "address": "Avenida Atlântica, 456",
+      "price": 3500,
+      "available": true,
+      "landLordId": "{{userId}}"
+    }
+  ]
+}
+
+
+### @name deleteLandLord
+DELETE http://localhost:{{port}}/landlords/{{userId}}
