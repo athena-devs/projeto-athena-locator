@@ -25,10 +25,7 @@ export class VerifyData {
         });
 
         const schema = z.object({
-            name: z.string().max(50),
             email: z.string().email().max(25),
-            password: z.string().min(6),
-            isLandLord: z.literal(1),
             companyName: z.string().max(100),
             companyDesc: z.string().max(500),
             companyPassword: z.string().min(6),

@@ -27,18 +27,18 @@ export class PrismaLandLordsRepository implements LandLordsRepository {
     }
 
     async getLandLord(userId: string): Promise<ILandLord | null> {
+        const user = await prisma.user.findUnique({
+            where: { id: userId  },
+        })
+
+        if (!user) return null
+
         const landLord = await prisma.landLord.findUnique({
             where: { userId },
             include: { properties: true }
         })
         
-        const user = await prisma.user.findUnique({
-            where: { id: userId  },
-        })
-
         if (!landLord) return null
-
-        if (!user) return null
 
         return {
             name: user.name,
